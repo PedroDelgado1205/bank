@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listado de Cuentas - Caja del Banco</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome para los iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1>Listado de Cuentas - Caja del Banco</h1>
+
+  <!-- Barra de búsqueda -->
+  <div class="input-group mb-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Buscar">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" onclick="search()"><i class="fas fa-search"></i> Buscar</button>
+    </div>
+  </div>
+
+  <!-- Listado de cuentas en forma de tarjetas -->
+  <div class="row" id="accountList">
+    <!-- Aquí se añadirán las tarjetas de cuentas dinámicamente -->
+  </div>
+</div>
+
+<!-- Modal de depósito y retiro -->
+<div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="transactionModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="transactionModalLabel">Realizar Transacción</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="transactionForm">
+          <div class="form-group">
+            <label for="amount">Cantidad:</label>
+            <input type="number" class="form-control" id="amount" placeholder="Ingrese la cantidad" required>
+          </div>
+          <input type="hidden" id="accountId">
+          <input type="hidden" id="transactionType">
+          <button type="submit" class="btn btn-primary">Realizar Transacción</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS y script de búsqueda -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  // Datos de ejemplo de cuentas
+  const cuentas = [
+    { id: 1, nombre: "Juan Pérez", saldo: 1500 },
+    { id: 2, nombre: "María López", saldo: 2500 },
+    { id: 3, nombre: "Carlos García", saldo: 1800 }
+    // Agrega más cuentas si es necesario
+  ];
+
+  // Función para mostrar el listado de cuentas en tarjetas
+  function mostrarListadoCuentas() {
+    const accountList = document.getElementById('accountList');
+    accountList.innerHTML = '';
+    cuentas.forEach(cuenta => {
+      const card = `<div class="col-md-4 mb-4">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">${cuenta.nombre}</h5>
+                          <p class="card-text">Saldo: ${cuenta.saldo}€</p>
+                          <button class="btn btn-primary btn-sm mr-2" onclick="openTransactionModal(${cuenta.id}, 'deposit')">Depósito</button>
+                          <button class="btn btn-danger btn-sm" onclick="openTransactionModal(${cuenta.id}, 'withdrawal')">Retiro</button>
+                        </div>
+                      </div>
+                    </div>`;
+      accountList.innerHTML += card;
+    });
+  }
+
+  // Función para abrir el modal de transacción
+  function openTransactionModal(accountId, transactionType) {
+    document.getElementById('accountId').value = accountId;
+    document.getElementById('transactionType').value = transactionType;
+    $('#transactionModal').modal('show');
+  }
+
+  // Función para realizar una transacción (depósito o retiro)
+  document.getElementById('transactionForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evitar el envío del formulario por defecto
+
+    // Obtener los valores del formulario
+    const accountId = parseInt(document.getElementById('accountId').value);
+    const amount = parseFloat(document.getElementById('amount').value);
+    const transactionType = document.getElementById('transactionType').value;
+
+    // Aquí puedes implementar la lógica para realizar la transacción
+    alert(`Realizar ${transactionType} de ${amount}€ para la cuenta con ID: ${accountId}`);
+
+    // Cerrar el modal después de la transacción
+    $('#transactionModal').modal('hide');
+  });
+
+  // Función para buscar cuentas
+  function search() {
+    const searchText = document.getElementById('searchInput').value.toLowerCase();
+    const filteredCuentas = cuentas.filter(cuenta => cuenta.nombre.toLowerCase().includes(searchText));
+    // Mostrar las cuentas filtradas
+    mostrarListadoCuentas(filteredCuentas);
+  }
+
+  // Mostrar el listado de cuentas al cargar la página
+  mostrarListadoCuentas();
+</script>
+
+</body>
+</html>

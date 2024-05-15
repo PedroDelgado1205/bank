@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Cuentas de Personas</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome para los iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    /* Estilos adicionales si los necesitas */
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1>Lista de Cuentas de Personas</h1>
+
+  <!-- Barra de búsqueda -->
+  <div class="input-group mb-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Buscar">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" onclick="search()">Buscar</button>
+    </div>
+  </div>
+
+  <!-- Tabla de registros -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Aquí se añadirán los registros dinámicamente -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Bootstrap JS y script de búsqueda -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  // Datos de ejemplo, reemplaza esto con tus datos reales
+  const cuentas = [
+    { nombre: "Juan Pérez", email: "juan@example.com" },
+    { nombre: "María López", email: "maria@example.com" },
+    { nombre: "Carlos García", email: "carlos@example.com" }
+    // Agrega más datos si es necesario
+  ];
+
+  // Función para mostrar los registros en la tabla
+  function mostrarRegistros() {
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '';
+    cuentas.forEach(cuenta => {
+      const row = `<tr>
+                    <td>${cuenta.nombre}</td>
+                    <td>${cuenta.email}</td>
+                    <td>
+                      <button class="btn btn-sm btn-primary mr-2" onclick="editarRegistro('${cuenta.email}')"><i class="fas fa-edit"></i> Editar</button>
+                      <button class="btn btn-sm btn-danger" onclick="eliminarRegistro('${cuenta.email}')"><i class="fas fa-trash"></i> Eliminar</button>
+                    </td>
+                  </tr>`;
+      tableBody.innerHTML += row;
+    });
+  }
+
+  // Función para buscar registros
+  function search() {
+    const searchText = document.getElementById('searchInput').value.toLowerCase();
+    const filteredCuentas = cuentas.filter(cuenta => cuenta.nombre.toLowerCase().includes(searchText) || cuenta.email.toLowerCase().includes(searchText));
+    // Mostrar los registros filtrados
+    mostrarRegistros(filteredCuentas);
+  }
+
+  // Función para editar un registro (aquí puedes implementar la lógica de edición)
+  function editarRegistro(email) {
+    alert(`Editar cuenta con email: ${email}`);
+  }
+
+  // Función para eliminar un registro
+  function eliminarRegistro(email) {
+    if (confirm(`¿Estás seguro de que deseas eliminar la cuenta con email: ${email}?`)) {
+      // Aquí puedes implementar la lógica para eliminar el registro
+      alert(`Cuenta con email ${email} eliminada`);
+      // Volver a mostrar los registros después de eliminar
+      mostrarRegistros();
+    }
+  }
+
+  // Mostrar los registros al cargar la página
+  mostrarRegistros();
+</script>
+
+</body>
+</html>

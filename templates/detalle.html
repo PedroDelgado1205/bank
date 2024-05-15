@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movimientos Bancarios</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome para los iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1>Movimientos Bancarios</h1>
+
+  <!-- Filtro por fechas -->
+  <div class="row mt-3">
+    <div class="col-md-4">
+      <label for="startDate">Fecha de inicio:</label>
+      <input type="date" class="form-control" id="startDate">
+    </div>
+    <div class="col-md-4">
+      <label for="endDate">Fecha de fin:</label>
+      <input type="date" class="form-control" id="endDate">
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-primary mt-4" onclick="filtrarPorFechas()"><i class="fas fa-filter"></i> Filtrar</button>
+    </div>
+  </div>
+
+  <!-- Lista de movimientos bancarios -->
+  <div class="mt-5">
+    <h3>Movimientos Bancarios</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Descripción</th>
+          <th>Monto</th>
+        </tr>
+      </thead>
+      <tbody id="movimientosList">
+        <!-- Aquí se añadirán los movimientos bancarios dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Bootstrap JS y script para manejar el filtro por fechas -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  // Datos de ejemplo de movimientos bancarios
+  const movimientos = [
+    { fecha: '2024-05-01', descripcion: 'Depósito', monto: 1000 },
+    { fecha: '2024-05-05', descripcion: 'Retiro', monto: -500 },
+    { fecha: '2024-05-10', descripcion: 'Transferencia', monto: -200 },
+    // Agrega más movimientos si es necesario
+  ];
+
+  // Función para mostrar los movimientos bancarios en la tabla
+  function mostrarMovimientosBancarios(movimientos) {
+    const movimientosList = document.getElementById('movimientosList');
+    movimientosList.innerHTML = '';
+    movimientos.forEach(movimiento => {
+      const row = `<tr>
+                    <td>${movimiento.fecha}</td>
+                    <td>${movimiento.descripcion}</td>
+                    <td>${movimiento.monto}</td>
+                  </tr>`;
+      movimientosList.innerHTML += row;
+    });
+  }
+
+  // Función para filtrar los movimientos bancarios por fechas
+  function filtrarPorFechas() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    // Convertir las fechas a objetos Date para comparación
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Filtrar los movimientos bancarios que estén dentro del rango de fechas
+    const movimientosFiltrados = movimientos.filter(movimiento => {
+      const movimientoDate = new Date(movimiento.fecha);
+      return movimientoDate >= start && movimientoDate <= end;
+    });
+
+    // Mostrar los movimientos bancarios filtrados
+    mostrarMovimientosBancarios(movimientosFiltrados);
+  }
+
+  // Mostrar todos los movimientos bancarios al cargar la página
+  mostrarMovimientosBancarios(movimientos);
+</script>
+
+</body>
+</html>
