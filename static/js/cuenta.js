@@ -1,4 +1,4 @@
-console.log('Adentro de la aplicación');
+//console.log('Adentro de la aplicación');
 
 var listaPersonas = [];
 
